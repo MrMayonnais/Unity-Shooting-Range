@@ -57,13 +57,13 @@ namespace Project_Files.Scripts.Player.Input
 
         //--------------------LOCKING SYSTEM--------------------//
         
-        private static readonly LockStorage LockStorage = new LockStorage();
+        private readonly LockStorage LockStorage = new LockStorage();
         
-        public static LockStorage GetLockStorage()
+        public LockStorage GetLockStorage()
         {
             return LockStorage;
         }
-        private static bool IsInputLocked(InputType inputType)
+        private bool IsInputLocked(InputType inputType)
         {
             return LockStorage.IsTypeLocked(inputType);
         }
