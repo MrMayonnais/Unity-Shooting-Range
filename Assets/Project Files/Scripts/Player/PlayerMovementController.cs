@@ -1,3 +1,4 @@
+using Project_Files.Scripts.Player.Input;
 using UnityEngine;
 
 namespace Project_Files.Scripts.Player
@@ -13,13 +14,18 @@ namespace Project_Files.Scripts.Player
         [SerializeField] private float airManeuverability = 0.5f;
     
         [SerializeField] private Transform groundCheckPoint;
+        
+        [SerializeField] private float acceleration = 10f;
+        [SerializeField] private float deceleration = 15f;
     
         private Rigidbody _rb;
         private bool _isGrounded;
     
         private float _currentSpeed;
     
-        private Vector3 _moveDirection;
+        private Vector2 _moveDirection;
+        private Vector3 _currentVelocity;
+        private Vector3 _movement;
     
         private const float GroundCheckDistance = 0.2f;
     
@@ -61,25 +67,31 @@ namespace Project_Files.Scripts.Player
 
         private void MovePlayer(Vector2 input)
         {
-            _moveDirection.x = input.x;
-            _moveDirection.z = input.y;
+            _moveDirection = input.normalized;
         }
     
         private void HandleMovement()
         {
-            if (!_isGrounded)
+            if(!_isGrounded)
             {
-                Vector3 velocity = _moveDirection * (airManeuverability * _currentSpeed);
-                velocity.y = _rb.linearVelocity.y;
-                _rb.linearVelocity = velocity;
-                _rb.AddForce(Physics.gravity * gravityMultiplier, ForceMode.Acceleration);
+                // Apply extra gravity when in the air
+                _rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
+                
+                // Reduce horizontal control in the air
+                _currentVelocity *= airManeuverability;
             }
-            else
-            {
-                Vector3 velocity = _moveDirection * _currentSpeed;
-                velocity.y = _rb.linearVelocity.y; // Preserve vertical velocity
-                _rb.linearVelocity = velocity;
-            }
+            
+            _movement = (transform.forward * _moveDirection.y + transform.right * _moveDirection.x).normalized;
+            
+            Vector3 targetVelocity = _movement * _currentSpeed;
+            
+            // Smooth towards target using acceleration / deceleration
+            float rate = _movement.sqrMagnitude > 0f ? acceleration : deceleration;
+            _currentVelocity = Vector3.MoveTowards(_currentVelocity, targetVelocity, rate * Time.fixedDeltaTime);
+ 
+            // Apply horizontal velocity, preserving existing vertical (Y) velocity
+            var velocityChange = _currentVelocity - new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+            _rb.AddForce(velocityChange, ForceMode.VelocityChange);
         }
     
         private bool IsGrounded()

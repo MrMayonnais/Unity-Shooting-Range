@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Project_Files.Scripts.Player
+namespace Project_Files.Scripts.Player.Input
 {
     public abstract class PlayerInputEvents
     {
