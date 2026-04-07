@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a89b4ec39bc3734fbb2b2184e9a18aa, type: 3}
+  m_Name: AR-2
+  m_EditorClassIdentifier: Assembly-CSharp::Project_Files.Scripts.Weapon.WeaponInfo
+  weaponName: AR-2
+  damage: 12
+  fireRate: 1200
+  magazineSize: 41
+  maxAmmo: 150
+  startingAmmo: 120
+  maxRange: 500
+  reloadTime: 0.3
+  adsTime: 0.1
+  xRecoilMultiplier: 0.3
+  yRecoilMultiplier: 0.4
+  xRecoilRecovery: 0
+  yRecoilRecovery: 0
+  bulletSpread: 0.2
+  reloadStates: 0100000002000000
+  emptyReloadStates: 010000000200000004000000
+  shotSound: {fileID: 0}
+  ammo: {fileID: 11400000, guid: a36104e2af571a944b3023ae6956557d, type: 2}
